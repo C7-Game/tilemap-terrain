@@ -57,7 +57,7 @@ class TerrainCorner:
 			return true
 		)
 		if len(ts) == 0:
-			#print(self.sorted)
+			print(self.sorted)
 			return terrains[0].id
 		return ts[0].id
 
@@ -100,12 +100,18 @@ func test(width, height, tiles):
 		if y % 2 == 0:
 			x = x / 2
 		else:
-			x = (x - 1) / 2
+			x = ((x -1) / 2) - 1
 		map[y][x] = tiles[i]['baseTerrainTypeKey']
 
 	for y in range(0, height):
 		for x in range(0, realWidth):
 			var pos = Vector2(x, y)
+			# this calculation of the adjacent tiles to an
+			# intersection is wrong - depending on the y coordinate
+			# the top and bottom tiles are at different offsets
+			# as a result, the generated tilemap is wrong and also
+			# generates invalid terrain type intersections (ie.
+			# grasslands adjacent to sea tile)
 			var left = 'coast' if x == 0 else map[y][x-1]
 			var right = 'coast' if x == realWidth-1 else map[y][x+1]
 			var top = 'coast' if y == 0 else map[y-1][x]
