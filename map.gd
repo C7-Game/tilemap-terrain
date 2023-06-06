@@ -84,26 +84,30 @@ func tileIndexToTileSet(index, width) -> Vector2:
 
 func test(width, height, tiles):
 	var map = []
+	var realWidth = width / 2
 	map.resize(height)
 	for y in range(0, height):
 		map[y] = []
-		for x in range(0, width):
-			map[y].resize(width)
+		for x in range(0, realWidth):
+			map[y].resize(realWidth)
 	
 	self.clear_layer(0)
 	for i in range(0, len(tiles)):
 		var tile = tiles[i]
-#		var x: int = tile['xCoordinate']
-#		var y: int = tile['yCoordinate']
-#		if x % 2 == 0 and y % 2 == 0:
-#			x -= 1
-#		map[y][x] = tiles[i]['baseTerrainTypeKey']
+		var x: int = tile['xCoordinate']
+		var y: int = tile['yCoordinate']
+		# convert to stacked coordinate system
+		if y % 2 == 0:
+			x = x / 2
+		else:
+			x = (x - 1) / 2
+		map[y][x] = tiles[i]['baseTerrainTypeKey']
 
 	for y in range(0, height):
-		for x in range(0, width):
+		for x in range(0, realWidth):
 			var pos = Vector2(x, y)
 			var left = 'coast' if x == 0 else map[y][x-1]
-			var right = 'coast' if x == width-1 else map[y][x+1]
+			var right = 'coast' if x == realWidth-1 else map[y][x+1]
 			var top = 'coast' if y == 0 else map[y-1][x]
 			var bottom = 'coast' if y == height-1 else map[y+1][x]
 			var lst = [top, right, bottom, left]
