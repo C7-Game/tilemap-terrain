@@ -57,14 +57,13 @@ class TerrainCorner:
 func fill(cell, id, atlas):
 	self.set_cell(0, cell, id, atlas)
 
-func test(width, height, tiles):
+func populate_tiles(width, height, tiles):
 	var map = []
-	var realWidth = width / 2
 	map.resize(height)
 	for y in range(0, height):
 		map[y] = []
-		for x in range(0, realWidth):
-			map[y].resize(realWidth)
+		for x in range(0, width):
+			map[y].resize(width)
 	
 	self.clear_layer(0)
 	for i in range(0, len(tiles)):
@@ -76,24 +75,18 @@ func test(width, height, tiles):
 		map[y][x] = tiles[i]['baseTerrainTypeKey']
 
 	for y in range(0, height):
-		for x in range(0, realWidth):
+		for x in range(0, width):
 			var pos = Vector2(x, y)
 			var left = map[y][x]
-			var right = 'coast' if x == realWidth-1 else map[y][x+1]
+			var right = map[y][(x+1) % width]
 
-			var evenRow = y % 2 == 0
+			var even = y % 2 == 0
 			var top = 'coast'
 			if y > 0:
-				if evenRow:
-					top = map[y-1][x]
-				elif x != realWidth - 1:
-					top = map[y-1][x+1]
+				top = map[y-1][x] if even else map[y-1][(x+1) % width]
 			var bottom = 'coast'
 			if y != height-1:
-				if evenRow:
-					bottom = map[y+1][x]
-				elif x != realWidth - 1:
-					bottom = map[y+1][x+1]
+				bottom = map[y+1][x] if even else map[y+1][(x+1) % width]
 
 			var lst = [top, right, bottom, left]
 			var corner = TerrainCorner.new(lst)
@@ -103,9 +96,8 @@ func test(width, height, tiles):
 
 func _ready():
 	var file = FileAccess.open('res://c7-static-map-save.json', FileAccess.READ)
-	var text = file.get_as_text()
-	var json = JSON.parse_string(text)['gameData']
-	var width: int = json['map']['numTilesWide']
+	var json = JSON.parse_string(file.get_as_text())['gameData']
+	var width: int = json['map']['numTilesWide'] / 2
 	var height: int = json['map']['numTilesTall']
 	var tiles = json['map']['tiles']
-	test(width, height, tiles)
+	populate_tiles(width, height, tiles)
