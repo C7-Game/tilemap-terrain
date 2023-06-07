@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://crwqgtecbpfyi"]
+[gd_scene load_steps=6 format=3 uid="uid://crwqgtecbpfyi"]
 
 [ext_resource type="Script" path="res://camera.gd" id="1_2xmln"]
 [ext_resource type="TileSet" uid="uid://ktxpgopm37g4" path="res://tiles.tres" id="1_bpby3"]
 [ext_resource type="TileSet" uid="uid://dd2eukipgfa04" path="res://tileset.tres" id="1_fn4s5"]
+[ext_resource type="Script" path="res://Tiles.gd" id="3_cq701"]
 [ext_resource type="Script" path="res://map.gd" id="4_m8ra8"]
 
 [node name="Node2D" type="Node2D"]
@@ -22,7 +23,7 @@ format = 2
 layer_0/name = "tiles"
 layer_0/y_sort_enabled = true
 layer_0/z_index = 1
-layer_0/tile_data = PackedInt32Array(65536, 3, 0, 0, 3, 0, -65537, 3, 0)
+script = ExtResource("3_cq701")
 
 [node name="Corners" type="TileMap" parent="Tiles"]
 y_sort_enabled = true
@@ -31,5 +32,4 @@ tile_set = ExtResource("1_fn4s5")
 format = 2
 layer_0/name = "corners"
 layer_0/y_sort_enabled = true
-layer_0/tile_data = PackedInt32Array(65535, 0, 0, 131071, 0, 0, -1, 0, 0, 0, 0, 0, 65536, 0, 1, 65537, 196608, 0, 131072, 0, 0, 196608, 0, 0, 1, 0, 3, 131073, 65536, 0, -65535, 0, 2, 2, 131072, 0, 131074, 0, 8, 196609, 0, 8, 3, 131072, 8, 65538, 0, 8, 262145, 393216, 8, -65534, 524288, 2, -131072, 65537, 0, -65536, 65537, 0, -131071, 65537, 0, -196608, 65537, 0)
 script = ExtResource("4_m8ra8")
