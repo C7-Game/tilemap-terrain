@@ -1,4 +1,7 @@
 extends TileMap
+class_name CornerMap
+
+@export var edge: Vector2
 
 class TerrainPcx:
 	var name: String
@@ -7,10 +10,7 @@ class TerrainPcx:
 	func _init(_name, _abc, _id):
 		self.name = _name; self.abc = _abc; self.id = _id
 	func valid_for(tiles: Array) -> bool:
-		for tile in tiles:
-			if not abc.has(tile):
-				return false
-		return true
+		return tiles.all(func(tile): return abc.has(tile))
 
 class TerrainCorner:
 	var tiles: Array # top, right, bottom, left
@@ -101,3 +101,6 @@ func _ready():
 	var height: int = json['map']['numTilesTall']
 	var tiles = json['map']['tiles']
 	populate_tiles(width, height, tiles)
+	edge = to_global(map_to_local(Vector2i(79, 0)))
+	edge.x += 64
+	print('map edge: ', edge)
